@@ -9,6 +9,9 @@ app.listen(8888);
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
 });
+app.get('/script.js', function (req, res) {
+  res.sendfile(__dirname + '/script.js');
+});
 app.get("/about", function(req, res) {
       res.sendfile(__dirname + '/index.html');
 
