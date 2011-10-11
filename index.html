@@ -1,23 +1,46 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script>
-  var socket = io.connect('http://localhost:8000');
-
+  var socket = io.connect('http://zad0xsis.net:8888');
+  var localUsername;
   // on connection to server, ask for user's name with an anonymous callback
   socket.on('connect', function(){
     // call the server-side function 'adduser' and send one parameter (value of prompt)
-    var localUsername = prompt("What's your name?");
-    socket.emit('adduser', localUsername);
+    localUsername = prompt("What's your name?");
+    if (!localUsername) {
+        window.location = './error';
+        alert('fuck');
+    } else{
+        socket.emit('adduser', localUsername, getUID());
+    }
   });
 
   // listener, whenever the server emits 'updatechat', this updates the chat body
-  socket.on('updatechat', function (username, data) {
-    var strippedmsg = data.replace(/(<([^>]+)>)/ig,"");
+  socket.on('error', function(error) {
+      if(localUsername === error) {
+        socket.disconnect()
+        alert('someone stole your username :(');
+      }
 
-    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    strippedmsg = strippedmsg.replace(exp,"<a href='$1'>$1</a>"); 
-    //alert(s);
-    $('#conversation').append('<b>'+username + ':</b> ' + strippedmsg + '<br>');
+  });
+  socket.on('updatechat', function (username, data, notice) {
+
+    if(notice.notice) {
+      var strippedmsg = data.replace(/(<([^>]+)>)/ig,"");
+
+      var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+      strippedmsg = strippedmsg.replace(exp,"<a href='$1'>$1</a>"); 
+      //alert(s);
+      $('#conversation').append('<b>SERVER: ' + strippedmsg + '</b><br>');
+    } else {
+      var strippedmsg = data.replace(/(<([^>]+)>)/ig,"");
+
+      var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+      strippedmsg = strippedmsg.replace(exp,"<a href='$1'>$1</a>"); 
+      //alert(s);
+      $('#conversation').append('<b>'+username + ':</b> ' + strippedmsg + '<br>');
+    }
+    
   });
 
   // listener, whenever the server emits 'updateusers', this updates the username list
@@ -27,33 +50,40 @@
       $('#users').append('<div>' + key + '</div>');
     });
   });
-  socket.on('error', function(data) {
-     if(data.args == localUsername) {
-       alert('error! '+data.args);
-     }
-  });
+
 
   // on load of page
-  $(function(){
+$(function(){
     // when the client clicks SEND
     $('#datasend').click( function() {
       var message = $('#data').val();
-      $('#data').val('');
+      if(message.length===0) {
+            $('div#error').html('<p>You must write a message!</p>');
+      } else {
+            $('div#error').html('');
+            $('#data').val('');
       // tell server to execute 'sendchat' and send along one parameter
       var exploded = message.split(' ');
         if(exploded[0] == '!notice') {
-          exploded.splice(1,1);
-                  alert(exploded);
+          //exploded.splice(0,1);
 
-          var msg;
+
+          var msg = "";
           $.each(exploded, function(key, value) {
-            msg += value;
+            if(key == 0) {
+            } else {
+                msg += value+" ";
+
+            }
           });
-            socket.emit('sendchat', msg);
+            socket.emit('sendnotice', msg);
+
 
         } else {
             socket.emit('sendchat', message);
         }
+      }
+      
 
     });
 
@@ -65,7 +95,12 @@
       }
     });
   });
+function getUID() {
+  
+  var string = Math.random().toString().slice(2,11);
 
+  return string;
+}
 </script>
 <div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
   <b>USERS</b>
@@ -75,4 +110,6 @@
   <div id="conversation"></div>
   <input id="data" style="width:200px;" />
   <input type="button" id="datasend" value="send" />
+    <div id="error" style="color:red"></div>
+
 </div>
