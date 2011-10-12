@@ -7,8 +7,17 @@ app.listen(8888);
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
 });
+app.get('/m', function (req, res) {
+  res.sendfile(__dirname + '/mobile.html');
+});
 app.get('/script.js', function (req, res) {
   res.sendfile(__dirname + '/script.js');
+});
+app.get('/mobile.js', function (req, res) {
+  res.sendfile(__dirname + '/mobile.js');
+});
+app.get('/m.style.css', function (req, res) {
+  res.sendfile(__dirname + '/m.style.css');
 });
 app.get("/about", function(req, res) {
       res.sendfile(__dirname + '/index.html');
