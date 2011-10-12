@@ -1,8 +1,6 @@
-var app = require('express').createServer()
+var app = require('express').createServer();
 var io = require('socket.io').listen(app);
-    fs = require('fs'),
-    os = require('os'),
-    url = require('url');
+
 app.listen(8888);
 
 // routing

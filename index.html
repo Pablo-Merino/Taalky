@@ -4,17 +4,29 @@
 <head>
 <style type="text/css">
 
-.chatbar {
-background-color: #999999;
-margin-left: 15px;
-margin-right: 20px;
-margin-top: 15px;
-width: 90%;
-padding: 15px;
-bottom:0px; 
-position:fixed;
-}
+#tweetsbox {
+    height: auto; 
+    width: 230px; 
+    border: solid; 
 
+    margin-left: 15px;
+    position: fixed;
+    overflow: hidden;
+    
+    background-color: white; 
+    padding: 10px;   
+    background-color: #ffffff;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    *border: 1px solid #999;
+    /* IE6-7 */
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
 </style>
 
     <meta charset="utf-8">
@@ -37,38 +49,32 @@ position:fixed;
     <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" type="text/css" />
 </head>
 
-<body style="margin-top: 60px;">
-<div class="topbar">
-      <div class="topbar-inner">
-        <div class="container-fluid">
-        <div style="text-align:center">
-          <p style="z-index: 1">Taalki</p>
-          </div>
-        </div>
-      </div>
+<body style="padding-top:20px">
+<div id="tweetsbox">
+<h3 style="margin-top: -5px">Users</h3>
+
+
+<ul id="users"></ul>
+</div>
+
+<div class="modal" style="position: relative; top: auto; left: auto; margin: 0 auto; margin-bottom: 15px;  z-index: 1; width: 695px"> 
+    <div class="modal-header">
+        <h3>Modal Heading</h3>
     </div>
-    <div class="container-fluid">
-        <div class="sidebar">
-            <b>USERS</b>
+    <div class="modal-body">
+        <table class="zebra-striped" id="convolist">
+        
 
-            <ul id="users"></ul>
-        </div>
-
-        <div class="content">
-        <div style="margin-top:20px">
-            <table class="zebra-striped" id="convolist">
-
-
-			</table>
-			</div>
-<div class="chatbar">
-        <input class="large" id="data" type="text" placeholder="Message here"> <button type="submit" id="datasend" class="btn primary">Save changes</button>
-                    <div id="error" style="color:red"></div>
-
-    </div>
-        </div>
+        </table>
     </div>
 
-    
+    <div class="modal-footer">
+        <div class="chatbar">
+        <input class="xxlarge" id="data" type="text" placeholder="Message here"> <button id="datasend" class="btn primary">Send</button>
+        <div id="error" style="color:red"></div>
+    </div>
+</div>
+</div>
+
 </body>
 </html>
