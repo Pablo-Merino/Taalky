@@ -7,9 +7,9 @@ app.listen(8080);
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
 });
-//app.get('/m', function (req, res) {
-  //res.sendfile(__dirname + '/mobile.html');
-//});
+app.get('/m', function (req, res) {
+  res.sendfile(__dirname + '/mobile.html');
+});
 app.get('/script.js', function (req, res) {
   res.sendfile(__dirname + '/script.js');
 });
