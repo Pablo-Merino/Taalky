@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:8888');
+var socket = io.connect('http://mallocspace.tk:8080');
   var localUsername;
   // on connection to server, ask for user's name with an anonymous callback
   socket.on('connect', function(){
